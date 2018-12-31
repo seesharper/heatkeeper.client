@@ -1,39 +1,38 @@
 <template>
   <div>
-    <h1>Locations</h1>
+    <router-link to="/">Home</router-link> |
+    <router-link to="/about">About</router-link>
     <ul id="example-1">
-      <li v-for="item in info" :key="item.name">
-        <div class="card">
-          <img src="@/assets/cabin.svg" alt="Avatar" style="width:50%">
-          <div class="container">
-            <h4>
-              <b>{{item.name}}</b>
-            </h4>
-            <p>{{item.description}}</p>
-          </div>
-        </div>
+      <li v-for="item in locations" :key="item.name">
+        <a v-bind:href="'zones/' + item.name">
+            <div class="card">
+                <h4>
+                <b>{{item.name}}</b>
+                </h4>
+            <img src="@/assets/cabin.svg" alt="Avatar" style="width:50%">
+            <div class="container">
+                <p>{{item.temperature}}&#8451;/{{item.humidity}}%</p>
+            </div>
+            </div>
+            </a>
       </li>
     </ul>
   </div>
 </template>
 
 <script lang="ts">
+import Vue from 'vue'
+import { Component } from 'vue-property-decorator'
 import { getLocations, Location } from "../web-api";
 
-export default {
-  data() {
-    return {
-      info : new Array<Location>(),
-      loading: true,
-      errored: false
+@Component
+export default class Locations extends Vue {
+    locations : Location[] = new Array<Location>();
+
+    async mounted(){
+        this.locations = await getLocations();
     }
-  },
-
-  async mounted() {
-      this.info = await getLocations();
-  }
-
-};
+}
 </script>
 
 <style scoped>
@@ -48,11 +47,6 @@ export default {
 }
 ul {
   list-style-type: none;
-}
-
-/* On mouse-over, add a deeper shadow */
-.card:hover {
-  box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
 }
 
 /* Add some padding inside the card container */
