@@ -19,7 +19,6 @@ import Vue from "vue";
 import { Component } from "vue-property-decorator";
 import { getZones, ZoneInfo } from "../web-api";
 import Battery from "@/components/Battery.vue";
-import Zone from "@/components/Zone.vue";
 import ZoneDetail from "@/components/ZoneDetail.vue";
 
 @Component({
