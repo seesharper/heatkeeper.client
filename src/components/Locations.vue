@@ -4,7 +4,7 @@
     <router-link to="/about">About</router-link>
     <ul id="example-1">
       <li v-for="item in locations" :key="item.name">
-        <a v-bind:href="'zones/' + item.name">
+        <router-link v-bind:to="'zones/' + item.name">
           <b-card
             v-bind:title="item.name"
             img-src="@/assets/download.jpeg"
@@ -17,7 +17,7 @@
             <p class="card-text">{{item.temperature}}&#8451;/{{item.humidity}}%</p>
 
           </b-card>
-        </a>
+        </router-link>
       </li>
     </ul>
   </div>
