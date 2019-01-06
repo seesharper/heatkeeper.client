@@ -5,17 +5,17 @@
         block
         href="#"
         class="text-left"
-        v-b-toggle.accordion1
+        v-b-toggle="'accordion' + index"
         variant="info"
       >{{name}} {{temperature}}&#8451;/{{humidity}}%</b-btn>
     </b-card-header>
-    <b-collapse id="accordion1" visible accordion="my-accordion" role="tabpanel">
+    <b-collapse v-bind:id="'accordion' + index" accordion="my-accordion" role="tabpanel">
       <b-card-body>
         <p class="card-text">I start opened because
           <code>visible</code> is
           <code>true</code>
         </p>
-        <p class="card-text">{{ text }}</p>
+        <p class="card-text">{{ names }}</p>
       </b-card-body>
     </b-collapse>
   </b-card>
@@ -38,6 +38,13 @@ export default class ZoneDetail extends Vue {
 
   @Prop({ default: 0 })
   name: string;
+
+  @Prop({ default: 0 })
+  index: number;
+
+  getIndex(i : number){
+    return i + 1;
+  }
 }
 </script>
 

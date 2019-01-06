@@ -7,7 +7,8 @@
         <router-link v-bind:to="'zones/' + item.name">
           <b-card
             v-bind:title="item.name"
-            img-src="@/assets/download.jpeg"
+
+            v-bind:img-src="item.imageUrl"
             img-alt="Image"
             img-top
             tag="article"

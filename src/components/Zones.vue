@@ -3,12 +3,13 @@
     {{ $route.params.location }}
     <div role="tablist">
       <ZoneDetail
-        v-for="item in zones"
+        v-for="(item, index) in zones"
         :key="item.name"
         v-bind:name="item.name"
         v-bind:temperature="item.temperature"
         v-bind:humidity="item.humidity"
         v-bind:batteryLevel="item.batteryLevel"
+        v-bind:index="index"
       ></ZoneDetail>
     </div>
   </div>

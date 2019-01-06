@@ -11,8 +11,8 @@ function api<T>(url: string): Promise<T> {
 
 export async function getLocations() : Promise<Location[]>{
     var locations = new Array<Location>();
-    locations.push({name:'Home', description:'This is home', temperature:2.3, humidity:42});
-    locations.push({name:'Cabin', description:'This is my cabin', temperature:-2.4, humidity:47});
+    locations.push({name:'Home', description:'This is home', temperature:2.3, humidity:42, imageUrl:require('@/assets/download.jpeg')});
+    locations.push({name:'Cabin', description:'This is my cabin', temperature:-2.4, humidity:47, imageUrl:require('@/assets/snow.jpg')});
     return locations;
 }
 
@@ -28,6 +28,7 @@ export interface Location {
   description: string;
   temperature: number;
   humidity: number;
+  imageUrl:string;
 }
 
 export interface ZoneInfo{
