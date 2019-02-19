@@ -1,5 +1,6 @@
 <template>
   <div class="home">
+
     <!-- <HelloWorld msg="Welcome to Your Vue.js + TypeScript App"/> -->
     <Locations></Locations>
 
@@ -12,6 +13,7 @@ import HelloWorld from '@/components/HelloWorld.vue'; // @ is an alias to /src
 import Locations from '@/components/Locations.vue';
 import Zones from '@/components/Zones.vue';
 import Battery from '@/components/Battery.vue';
+import NavigationBar from '@/components/NavigationBar.vue';
 
 @Component({
   components: {
@@ -19,6 +21,7 @@ import Battery from '@/components/Battery.vue';
     Locations,
     Zones,
     Battery,
+    NavigationBar
   },
 })
 export default class Home extends Vue {}

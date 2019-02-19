@@ -1,13 +1,10 @@
 <template>
   <div>
-    <router-link to="/">Home</router-link>|
-    <router-link to="/about">About</router-link>
     <ul id="example-1">
       <li v-for="item in locations" :key="item.name">
         <router-link v-bind:to="'zones/' + item.name">
           <b-card
             v-bind:title="item.name"
-
             v-bind:img-src="item.imageUrl"
             img-alt="Image"
             img-top
@@ -27,7 +24,8 @@
 <script lang="ts">
 import Vue from "vue";
 import { Component } from "vue-property-decorator";
-import { getLocations, Location } from "../web-api";
+import {Location, ZoneInfo} from '../models/models';
+import { getLocations} from "../web-api";
 
 @Component
 export default class Locations extends Vue {

@@ -1,7 +1,11 @@
+import { register } from 'register-service-worker';
 import Vue from 'vue';
 import Router from 'vue-router';
 import Home from './views/Home.vue';
-import Zones from './components/Zones.vue'
+import Zones from './components/Zones.vue';
+import Login from './views/Login.vue';
+import Register from './views/Register.vue';
+
 
 Vue.use(Router);
 
@@ -13,6 +17,9 @@ export default new Router({
       path: '/',
       name: 'home',
       component: Home,
+      meta: {
+        requiresAuth: true,
+      },
     },
     {
       path: '/about',
@@ -26,6 +33,19 @@ export default new Router({
       path: '/zones/:location',
       name : 'zones',
       component : Zones,
-    }
+      meta: {
+        requiresAuth: true,
+      },
+    },
+    {
+      path: '/login',
+      name: 'login',
+      component : Login,
+    },
+    {
+      path: '/register',
+      name: 'register',
+      component : Register,
+    },
   ],
 });

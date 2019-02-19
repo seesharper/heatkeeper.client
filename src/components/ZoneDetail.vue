@@ -15,7 +15,7 @@
           <code>visible</code> is
           <code>true</code>
         </p>
-        <p class="card-text">{{ names }}</p>
+        <p class="card-text">sdgsds</p>
       </b-card-body>
     </b-collapse>
   </b-card>

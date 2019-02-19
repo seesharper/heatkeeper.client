@@ -18,7 +18,9 @@
 <script lang="ts">
 import Vue from "vue";
 import { Component } from "vue-property-decorator";
-import { getZones, ZoneInfo } from "../web-api";
+import { getZones } from "../web-api";
+import { ZoneInfo } from '../models/models'
+
 import Battery from "@/components/Battery.vue";
 import ZoneDetail from "@/components/ZoneDetail.vue";
 
