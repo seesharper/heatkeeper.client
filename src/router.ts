@@ -5,6 +5,7 @@ import Home from './views/Home.vue';
 import Zones from './components/Zones.vue';
 import Login from './views/Login.vue';
 import Register from './views/Register.vue';
+import RegisterLocation from './views/RegisterLocation.vue';
 
 
 Vue.use(Router);
@@ -46,6 +47,14 @@ export default new Router({
       path: '/register',
       name: 'register',
       component : Register,
+    },
+    {
+      path: '/register-location',
+      name: 'register-location',
+      component : RegisterLocation,
+      meta: {
+        requiresAuth: true,
+      },
     },
   ],
 });

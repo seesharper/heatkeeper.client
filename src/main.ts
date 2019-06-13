@@ -12,11 +12,12 @@ import {
   faUsers,
   faLock,
   faHome,
+  faBars,
 } from '@fortawesome/free-solid-svg-icons';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 
-library.add(faUser, faEnvelope, faPhone, faUsers, faLock, faHome);
+library.add(faUser, faEnvelope, faPhone, faUsers, faLock, faHome, faBars);
 Vue.component('font-awesome-icon', FontAwesomeIcon); // registered globally
 Vue.use(BootstrapVue);
 Vue.config.productionTip = false;

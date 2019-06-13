@@ -1,7 +1,7 @@
 
 import {Location, ZoneInfo} from './models/models';
 import {EnvironmentHelper} from './EnvironmentHelper'
-
+import { HttpClient } from '@/HttpClient';
 
 async function api<T>(url: string): Promise<T> {
   const baseUrl = EnvironmentHelper.baseUrl;
@@ -15,6 +15,9 @@ async function api<T>(url: string): Promise<T> {
 }
 
 export async function getLocations() : Promise<Location[]>{
+
+    const test = await HttpClient.get<Location[]>('api/locations');
+    return test;
     var locations = new Array<Location>();
     locations.push({name:'Homes', description:'This is home', temperature:2.3, humidity:42, imageUrl:require('@/assets/download.jpeg')});
     locations.push({name:'Cabin', description:'This is my cabin', temperature:-2.4, humidity:47, imageUrl:require('@/assets/snow.jpg')});

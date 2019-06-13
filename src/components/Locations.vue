@@ -1,61 +1,91 @@
 <template>
-  <div>
-    <ul id="example-1">
-      <li v-for="item in locations" :key="item.name">
-        <router-link v-bind:to="'zones/' + item.name">
-          <b-card
-            v-bind:title="item.name"
-            v-bind:img-src="item.imageUrl"
-            img-alt="Image"
-            img-top
-            tag="article"
-            style="max-width: 20rem;"
-            class="mb-2"
-          >
-            <p class="card-text">{{item.temperature}}&#8451;/{{item.humidity}}%</p>
-
-          </b-card>
-        </router-link>
-      </li>
-    </ul>
-  </div>
+    <div>
+        <ul id="example-1">
+            <li v-for="item in locations" :key="item.name">
+                <router-link v-bind:to="'zones/' + item.name">
+                    <b-card
+                        v-bind:title="item.name"
+                        v-bind:img-src="item.imageUrl"
+                        img-alt="Image"
+                        img-top
+                        tag="article"
+                        style="max-width: 20rem;"
+                        class="mb-2"
+                    >
+                        <p class="card-text">{{item.temperature}}&#8451;/{{item.humidity}}%</p>
+                        <b-dropdown id="ddown1" text="Dropdown Button" class="m-md-2" no-caret>
+                            <template slot="button-content">
+                                <font-awesome-icon icon="bars"/>
+                            </template>
+                            <b-dropdown-item v-on:click="editLocation">
+                                Edit Location
+                            </b-dropdown-item >
+                            <b-dropdown-item v-on:click="deleteLocation">
+                                Delete Location
+                            </b-dropdown-item>
+                        </b-dropdown>
+                    </b-card>
+                </router-link>
+            </li>
+        </ul>
+      <b-modal centered ref="deleteWarning" title="Delete Location" @ok="actuallyDeleteLocation">
+    <p class="my-4">Warning! Are you sure that you want to delete this location.</p>
+  </b-modal>
+    </div>
 </template>
 
 <script lang="ts">
 import Vue from "vue";
 import { Component } from "vue-property-decorator";
-import {Location, ZoneInfo} from '../models/models';
-import { getLocations} from "../web-api";
+import { Location, ZoneInfo } from "../models/models";
+import { getLocations } from "../web-api";
+import { HttpClient } from '@/HttpClient';
 
 @Component
 export default class Locations extends Vue {
-  locations: Location[] = new Array<Location>();
+    locations: Location[] = new Array<Location>();
 
-  async mounted() {
-    this.locations = await getLocations();
-  }
+    async mounted() {
+        this.locations = await getLocations();
+    }
+
+    async editLocation(){
+      console.log('selected');
+    }
+
+    async deleteLocation(){
+      const deleteWarningElement : any = this.$refs.deleteWarning;
+      deleteWarningElement.show();
+
+      console.log('selected');
+    }
+
+
+
+    async actuallyDeleteLocation(){
+      console.log('delete');
+    }
 }
 </script>
 
 <style scoped>
 .card {
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-  transition: 0.3s;
-  border: 1px solid black;
-  margin: 0 auto;
-  margin-top: 10px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    transition: 0.3s;
+    border: 1px solid black;
+    margin: 0 auto;
+    margin-top: 10px;
 }
 ul {
-  list-style-type:none;
-  text-align: center;
+    list-style-type: none;
+    text-align: center;
     padding: 0;
     margin: 0;
 }
 
-li{
-  display: inline;
+li {
+    display: inline;
 }
 
 /* Add some padding inside the card container */
-
 </style>
