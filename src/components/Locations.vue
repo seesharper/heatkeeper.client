@@ -1,5 +1,6 @@
 <template>
     <div>
+        <h1>Locations</h1>
         <ul id="example-1">
             <li v-for="item in locations" :key="item.name">
                 <router-link v-bind:to="'zones/' + item.name">
@@ -17,20 +18,16 @@
                             <template slot="button-content">
                                 <font-awesome-icon icon="bars"/>
                             </template>
-                            <b-dropdown-item v-on:click="editLocation">
-                                Edit Location
-                            </b-dropdown-item >
-                            <b-dropdown-item v-on:click="deleteLocation">
-                                Delete Location
-                            </b-dropdown-item>
+                            <b-dropdown-item v-on:click="editLocation">Edit Location</b-dropdown-item>
+                            <b-dropdown-item v-on:click="deleteLocation">Delete Location</b-dropdown-item>
                         </b-dropdown>
                     </b-card>
                 </router-link>
             </li>
         </ul>
-      <b-modal centered ref="deleteWarning" title="Delete Location" @ok="actuallyDeleteLocation">
-    <p class="my-4">Warning! Are you sure that you want to delete this location.</p>
-  </b-modal>
+        <b-modal centered ref="deleteWarning" title="Delete Location" @ok="actuallyDeleteLocation">
+            <p class="my-4">Warning! Are you sure that you want to delete this location.</p>
+        </b-modal>
     </div>
 </template>
 
@@ -39,31 +36,35 @@ import Vue from "vue";
 import { Component } from "vue-property-decorator";
 import { Location, ZoneInfo } from "../models/models";
 import { getLocations } from "../web-api";
-import { HttpClient } from '@/HttpClient';
+import { HttpClient } from "@/HttpClient";
 
 @Component
 export default class Locations extends Vue {
     locations: Location[] = new Array<Location>();
 
-    async mounted() {
+    async created() {
         this.locations = await getLocations();
+        if (this.locations.length == 0) {
+            this.$router.push("register-location");
+            console.log("No Locations");
+        }
     }
 
-    async editLocation(){
-      console.log('selected');
+    async mounted() {}
+
+    async editLocation() {
+        console.log("selected");
     }
 
-    async deleteLocation(){
-      const deleteWarningElement : any = this.$refs.deleteWarning;
-      deleteWarningElement.show();
+    async deleteLocation() {
+        const deleteWarningElement: any = this.$refs.deleteWarning;
+        deleteWarningElement.show();
 
-      console.log('selected');
+        console.log("selected");
     }
 
-
-
-    async actuallyDeleteLocation(){
-      console.log('delete');
+    async actuallyDeleteLocation() {
+        console.log("delete");
     }
 }
 </script>

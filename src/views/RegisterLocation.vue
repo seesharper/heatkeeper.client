@@ -1,6 +1,6 @@
 <template>
     <div id="parent">
-        <b-form id="registerLocationForm" @submit.prevent="onSubmit">
+        <b-form id="registerLocationForm" @submit.prevent="onSubmit" autocomplete="off">
             <h3 class="display-8">New Location</h3>
             <b-form-group>
                 <b-form-input type="text" v-model="name" required placeholder="Name"/>
@@ -32,7 +32,10 @@ export default class RegisterLocation extends Vue {
 
         try {
             console.log("sdfsadf");
-            //let response = await HttpClient.post('api/locations', {name : this.name, description : this.description})
+            let response = await HttpClient.post("api/locations", {
+                name: this.name,
+                description: this.description
+            });
         } catch {}
     }
 }
