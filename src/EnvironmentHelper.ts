@@ -9,9 +9,9 @@ export class EnvironmentHelper {
 
     public static get baseUrl(): string {
         if (EnvironmentHelper.isDevelopment) {
-            return "http://localhost:5000/"
+            return 'http://localhost:5000/'
         }
 
-        return "/";
+        return '/';
     }
 }

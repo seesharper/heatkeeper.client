@@ -18,7 +18,7 @@ export interface LoginRequest {
     password: string;
   }
 
-export interface LoggedInUser {
+export interface CurrentUser {
     token: string;
     name: string;
     isAdmin: boolean;

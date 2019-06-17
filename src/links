@@ -28,3 +28,5 @@ localStorage.removeItem('accessToken');
 https://webdevchallenges.com/use-protected-routes-in-vue-js/
 
 https://scotch.io/tutorials/vue-authentication-and-route-handling-using-vue-router
+
+var urlRoot = '@Context.Request.Url.SiteBase';

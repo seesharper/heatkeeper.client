@@ -1,28 +1,23 @@
 <template>
-  <div class="home">
-
-    <!-- <HelloWorld msg="Welcome to Your Vue.js + TypeScript App"/> -->
-    <Locations></Locations>
-
-  </div>
+    <div class="home">
+        <Locations></Locations>
+    </div>
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
-import HelloWorld from '@/components/HelloWorld.vue'; // @ is an alias to /src
-import Locations from '@/components/Locations.vue';
-import Zones from '@/components/Zones.vue';
-import Battery from '@/components/Battery.vue';
-import NavigationBar from '@/components/NavigationBar.vue';
+import { Component, Vue } from "vue-property-decorator";
+import HelloWorld from "@/components/HelloWorld.vue"; // @ is an alias to /src
+import Locations from "@/components/Locations.vue";
+import Zones from "@/components/Zones.vue";
+import Battery from "@/components/Battery.vue";
 
 @Component({
-  components: {
-    HelloWorld,
-    Locations,
-    Zones,
-    Battery,
-    NavigationBar
-  },
+    components: {
+        HelloWorld,
+        Locations,
+        Zones,
+        Battery
+    }
 })
 export default class Home extends Vue {}
 </script>

@@ -1,28 +1,39 @@
 <template>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div>
+        <b-navbar toggleable="lg" type="dark" variant="info">
+            <b-navbar-brand href="/">HeatKeeper</b-navbar-brand>
 
+            <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
-    <ul class="navbar-nav">
-      <!-- <li class="nav-item active">
-        <font-awesome-icon icon="home">sd</font-awesome-icon>
-      </li> -->
-      <li class="nav-item active">
-        <font-awesome-icon icon="home"></font-awesome-icon>
-      </li>
-    </ul>
-</nav>
+            <b-collapse id="nav-collapse" is-nav>
+                <b-navbar-nav>
+                    <b-nav-item href="#">
+                        <font-awesome-icon icon="home"/>
+                    </b-nav-item>
+                </b-navbar-nav>
+
+                <!-- Right aligned nav items -->
+                <b-navbar-nav class="ml-auto">
+                    <b-nav-item>Bernhard Richter</b-nav-item>
+                    <b-nav-item-dropdown right>
+                        <!-- Using 'button-content' slot -->
+                        <template slot="button-content">
+                            <font-awesome-icon icon="user"/>
+                        </template>
+                        <b-dropdown-item href="#">Profile</b-dropdown-item>
+                        <b-dropdown-item href="#">Sign Out</b-dropdown-item>
+                    </b-nav-item-dropdown>
+                </b-navbar-nav>
+            </b-collapse>
+        </b-navbar>
+    </div>
 </template>
-
-
 <script lang="ts">
 import Vue from "vue";
 import { Component, Prop } from "vue-property-decorator";
 
-
 @Component
 export default class NavigationBar extends Vue {
-    async mounted(){
-
-    }
+    async mounted() {}
 }
 </script>
