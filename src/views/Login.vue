@@ -4,12 +4,12 @@
             <div class="form-group">
                 <input
                     type="username"
-                    v-model="userName"
+                    v-model="email"
                     class="form-control"
                     name="username"
                     placeholder="Username"
                     required="required"
-                >
+                />
             </div>
             <div class="form-group">
                 <input
@@ -19,7 +19,7 @@
                     name="password"
                     placeholder="Password"
                     required="required"
-                >
+                />
             </div>
             <div class="form-group">
                 <button type="submit" class="btn btn-primary btn-lg btn-block login-btn">Login</button>
@@ -34,42 +34,54 @@
 </template>
 
 <script lang="ts">
-import { CurrentUser } from "../models/models";
+import { CurrentUser, LoginRequest } from "../models/models";
 import Vue from "vue";
 import { Component } from "vue-property-decorator";
 import router from "@/router";
+import store from "../store/store";
 
 @Component
 export default class Login extends Vue {
     public userNamePlaceHolder = "user name / e-mail address";
 
-    public userName: string = "";
+    public email: string = "";
     public password: string = "";
     public loginFailed: boolean = false;
 
     async handleSubmit(): Promise<void> {
         this.loginFailed = false;
-        var requestHeaders = new Headers();
-        requestHeaders.append("Content-Type", "application/json");
-        var baseAddress = "http://localhost:5000";
-        var url = `${baseAddress}/api/users/authenticate`;
-        var response = await fetch(url, {
-            method: "POST",
-            headers: requestHeaders,
-            body: JSON.stringify({
-                userName: this.userName,
+        try {
+            await store.dispatch("LOGIN", {
+                email: this.email,
                 password: this.password
-            })
-        });
-        if (response.status == 200) {
-            var authResponse = await response.json();
-            var loggedInUser = <CurrentUser>authResponse;
-            localStorage.setItem("loggedInUser", JSON.stringify(loggedInUser));
-            router.push("/");
-        } else {
+            } as LoginRequest);
+            this.loginFailed = false;
+        } catch (error) {
+            console.log(error);
             this.loginFailed = true;
-            localStorage.removeItem("loggedInUser");
         }
+
+        // var requestHeaders = new Headers();
+        // requestHeaders.append("Content-Type", "application/json");
+        // var baseAddress = "http://localhost:5000";
+        // var url = `${baseAddress}/api/users/authenticate`;
+        // var response = await fetch(url, {
+        //     method: "POST",
+        //     headers: requestHeaders,
+        //     body: JSON.stringify({
+        //         email: this.email,
+        //         password: this.password
+        //     })
+        // });
+        // if (response.status == 200) {
+        //     var authResponse = await response.json();
+        //     var loggedInUser = <CurrentUser>authResponse;
+        //     localStorage.setItem("loggedInUser", JSON.stringify(loggedInUser));
+        //     router.push("/");
+        // } else {
+        //     this.loginFailed = true;
+        //     localStorage.removeItem("loggedInUser");
+        // }
     }
 }
 </script>
