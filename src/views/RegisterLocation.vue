@@ -3,10 +3,10 @@
         <b-form id="registerLocationForm" @submit.prevent="onSubmit" autocomplete="off">
             <h3 class="display-8">New Location</h3>
             <b-form-group>
-                <b-form-input type="text" v-model="name" required placeholder="Name"/>
+                <b-form-input type="text" v-model="name" required placeholder="Name" />
             </b-form-group>
             <b-form-group>
-                <b-form-input type="text" v-model="description" placeholder="Description"/>
+                <b-form-input type="text" v-model="description" placeholder="Description" />
             </b-form-group>
             <b-form-group>
                 <b-button block type="submit" variant="primary">Create location</b-button>

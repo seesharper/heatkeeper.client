@@ -1,6 +1,5 @@
 <template>
     <div>
-        <h1>Locations</h1>
         <ul id="example-1">
             <li v-for="item in locations" :key="item.name">
                 <router-link v-bind:to="'zones/' + item.name">
@@ -14,13 +13,6 @@
                         class="mb-2"
                     >
                         <p class="card-text">{{item.temperature}}&#8451;/{{item.humidity}}%</p>
-                        <b-dropdown id="ddown1" text="Dropdown Button" class="m-md-2" no-caret>
-                            <template slot="button-content">
-                                <font-awesome-icon icon="bars"/>
-                            </template>
-                            <b-dropdown-item v-on:click="editLocation">Edit Location</b-dropdown-item>
-                            <b-dropdown-item v-on:click="deleteLocation">Delete Location</b-dropdown-item>
-                        </b-dropdown>
                     </b-card>
                 </router-link>
             </li>
@@ -37,20 +29,20 @@ import { Component } from "vue-property-decorator";
 import { Location, ZoneInfo } from "../models/models";
 import { getLocations } from "../web-api";
 import { HttpClient } from "@/HttpClient";
+import store from "../store/store";
 
 @Component
 export default class Locations extends Vue {
-    locations: Location[] = new Array<Location>();
-
-    async created() {
-        this.locations = await getLocations();
-        if (this.locations.length == 0) {
-            this.$router.push("register-location");
-            console.log("No Locations");
-        }
+    get locations() {
+        return store.state.Locations;
     }
 
-    async mounted() {}
+    async mounted() {
+        await store.dispatch("FETCH_LOCATIONS");
+        if (store.state.Locations.length == 0) {
+            this.$router.push("register-location");
+        }
+    }
 
     async editLocation() {
         console.log("selected");
