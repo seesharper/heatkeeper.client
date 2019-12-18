@@ -10,7 +10,7 @@
                         class="d-flex justify-content-between align-items-center"
                     >
                         <span class="name">{{item.email}}</span>
-                        <b-btn>Edit</b-btn>
+                        <router-link :to="{name : 'edit-user', params : {id : item.id}}">Edit</router-link>
                     </b-list-group-item>
                 </b-list-group>
             </b-form-group>
@@ -39,15 +39,6 @@ export default Vue.extend({
 
     async mounted() {
         await store.dispatch("FETCH_USERS");
-    },
-
-    methods: {
-        async edit(user: UserInfo) {
-            await router.push({
-                name: "edit-user",
-                params: { userId: user.id.toString() }
-            });
-        }
     }
 });
 </script>

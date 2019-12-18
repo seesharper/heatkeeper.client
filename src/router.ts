@@ -9,6 +9,7 @@ import Register from './views/Register.vue';
 import RegisterLocation from './views/RegisterLocation.vue';
 import ManageLocations from './views/ManageLocations.vue';
 import RegisterUser from './views/RegisterUser.vue';
+import EditUser from './views/EditUser.vue';
 
 Vue.use(Router);
 
@@ -62,9 +63,9 @@ export default new Router({
       component: RegisterUser
     },
     {
-      path: '/edit-user',
+      path: '/edit-user/:id',
       name: 'edit-user',
-      component: RegisterUser
+      component: EditUser
     },
     {
       path: '/manageLocations',

@@ -1,4 +1,3 @@
-import { ProblemDetails } from './models';
 import { expect } from 'chai';
 export interface Location {
   name: string;
@@ -33,7 +32,7 @@ export interface User {
   name: string;
   isAdmin: boolean;
   eMail: string;
-  id: string;
+  id: number;
 }
 
 export interface UserInfo {

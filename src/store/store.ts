@@ -1,4 +1,11 @@
-import { login, getLocations, createUser, getUsers } from '@/api/api';
+import {
+  login,
+  getLocations,
+  createUser,
+  getUsers,
+  updateUser,
+  deleteUser
+} from '@/api/api';
 import {
   User,
   LoginRequest,
@@ -47,6 +54,14 @@ export default new Vuex.Store({
     SET_USERS(state, users: UserInfo[]) {
       state.Users = users;
     },
+    SET_USER(state, user: UserInfo) {
+      const userIndex = state.Users.indexOf(user);
+      state.Users[userIndex] = user;
+    },
+    REMOVE_USER(state, userId: number) {
+      state.Users = state.Users.filter(u => u.id !== userId);
+    },
+
     INITIALIZE(state) {
       const json = localStorage.getItem('user');
       if (json != null) {
@@ -82,7 +97,7 @@ export default new Vuex.Store({
       state.commit('SET_USERS', users);
       state.commit('SET_BUSY_STATUS', false);
     },
-    async SAVE_USER(state, user: NewUser) {
+    async CREATE_USER(state, user: NewUser) {
       state.commit('SET_BUSY_STATUS', true);
       try {
         state.commit('CLEAR_ERROR');
@@ -95,6 +110,38 @@ export default new Vuex.Store({
           if (axiosError && axiosError.response) {
             state.commit('SET_ERROR', axiosError.response.data.detail);
           }
+        }
+      } finally {
+        state.commit('SET_BUSY_STATUS', false);
+      }
+    },
+
+    async UPDATE_USER(state, user: User) {
+      state.commit('SET_BUSY_STATUS', true);
+      try {
+        state.commit('CLEAR_ERROR');
+        await updateUser(user);
+        state.commit('SET_USER', user);
+      } catch (error) {
+        const axiosError = error as AxiosError<ProblemDetails>;
+        if (axiosError && axiosError.response) {
+          state.commit('SET_ERROR', axiosError.response.data.detail);
+        }
+      } finally {
+        state.commit('SET_BUSY_STATUS', false);
+      }
+    },
+
+    async DELETE_USER(state, userId: number) {
+      state.commit('SET_BUSY_STATUS', true);
+      try {
+        state.commit('CLEAR_ERROR');
+        await deleteUser(userId);
+        state.commit('REMOVE_USER', userId);
+      } catch (error) {
+        const axiosError = error as AxiosError<ProblemDetails>;
+        if (axiosError && axiosError.response) {
+          state.commit('SET_ERROR', axiosError.response.data.detail);
         }
       } finally {
         state.commit('SET_BUSY_STATUS', false);

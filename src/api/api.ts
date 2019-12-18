@@ -47,3 +47,19 @@ export async function createUser(user: NewUser): Promise<number> {
   const result = await axios.post(`${baseUrl}api/users`, user, config);
   return result.data.Id;
 }
+
+export async function updateUser(user: User): Promise<void> {
+  const config: AxiosRequestConfig = {
+    headers: { Authorization: 'bearer ' + store.state.User.token }
+  };
+  const baseUrl = EnvironmentHelper.baseUrl;
+  await axios.patch(`${baseUrl}api/users/${user.id}`, user, config);
+}
+
+export async function deleteUser(userId: Number): Promise<void> {
+  const config: AxiosRequestConfig = {
+    headers: { Authorization: 'bearer ' + store.state.User.token }
+  };
+  const baseUrl = EnvironmentHelper.baseUrl;
+  await axios.delete(`${baseUrl}api/users/${userId}`, config);
+}
