@@ -68,6 +68,13 @@ export default class Locations extends Vue {
     border: 1px solid black;
     margin: 0 auto;
     margin-top: 10px;
+    background: rgb(2, 0, 36);
+    background: linear-gradient(
+        90deg,
+        rgba(2, 0, 36, 1) 0%,
+        rgba(245, 245, 250, 1) 0%,
+        rgba(27, 176, 207, 1) 100%
+    );
 }
 ul {
     list-style-type: none;

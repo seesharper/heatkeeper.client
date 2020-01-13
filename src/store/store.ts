@@ -4,12 +4,14 @@ import {
   createUser,
   getUsers,
   updateUser,
-  deleteUser
+  deleteUser,
+  createLocation,
+  updateLocation
 } from '@/api/api';
 import {
   User,
   LoginRequest,
-  Location,
+  LocationInfo,
   DefaultUser,
   UserInfo,
   ProblemDetails,
@@ -22,14 +24,14 @@ import { AxiosError } from 'axios';
 Vue.use(Vuex);
 
 export interface HeatKeeperState {
-  Locations: Location[];
+  Locations: LocationInfo[];
 }
 
 export default new Vuex.Store({
   state: {
     IsBusy: false as boolean,
     User: DefaultUser as User,
-    Locations: [] as Location[],
+    Locations: [] as LocationInfo[],
     Users: [] as UserInfo[],
     HasFailed: false,
     ErrorMessage: ''
@@ -48,9 +50,18 @@ export default new Vuex.Store({
       state.IsBusy = isBusy;
     },
 
-    SET_LOCATIONS(state, locations: Location[]) {
+    SET_LOCATIONS(state, locations: LocationInfo[]) {
       state.Locations = locations;
     },
+
+    ADD_LOCATION(state, location: LocationInfo) {
+      state.Locations.push(location);
+    },
+    SET_LOCATION(state, location: LocationInfo) {
+      const userIndex = state.Locations.indexOf(location);
+      state.Locations[userIndex] = location;
+    },
+
     SET_USERS(state, users: UserInfo[]) {
       state.Users = users;
     },
@@ -84,6 +95,39 @@ export default new Vuex.Store({
       const user = await login(loginRequest);
       state.commit('SET_CURRENT_USER', user);
       state.commit('SET_BUSY_STATUS', false);
+    },
+    async CREATE_LOCATION(state, location: LocationInfo) {
+      state.commit('SET_BUSY_STATUS', true);
+      try {
+        state.commit('CLEAR_ERROR');
+        const userId = await createLocation(location);
+        location.id = userId;
+        state.commit('ADD_LOCATION', location);
+      } catch (error) {
+        if (error) {
+          const axiosError = error as AxiosError<ProblemDetails>;
+          if (axiosError && axiosError.response) {
+            state.commit('SET_ERROR', axiosError.response.data.detail);
+          }
+        }
+      } finally {
+        state.commit('SET_BUSY_STATUS', false);
+      }
+    },
+    async UPDATE_LOCATION(state, location: LocationInfo) {
+      state.commit('SET_BUSY_STATUS', true);
+      try {
+        state.commit('CLEAR_ERROR');
+        await updateLocation(location);
+        state.commit('SET_LOCATION', location);
+      } catch (error) {
+        const axiosError = error as AxiosError<ProblemDetails>;
+        if (axiosError && axiosError.response) {
+          state.commit('SET_ERROR', axiosError.response.data.detail);
+        }
+      } finally {
+        state.commit('SET_BUSY_STATUS', false);
+      }
     },
     async FETCH_LOCATIONS(state) {
       state.commit('SET_BUSY_STATUS', true);
