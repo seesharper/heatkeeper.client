@@ -4,32 +4,39 @@ import {
   createUser,
   getUsers,
   updateUser,
-  deleteUser
+  deleteUser,
+  createLocation,
+  updateLocation,
+  getZones,
+  getLocationUsers,
+  createZone,
+  getSensors
 } from '@/api/api';
 import {
   User,
   LoginRequest,
-  Location,
+  LocationInfo,
   DefaultUser,
   UserInfo,
-  ProblemDetails,
-  NewUser
+  NewUser,
+  ZoneInfo,
+  SensorInfo
 } from './../models/models';
 import Vue from 'vue';
 import Vuex from 'vuex';
-import { AxiosError } from 'axios';
 
 Vue.use(Vuex);
-
-export interface HeatKeeperState {
-  Locations: Location[];
-}
 
 export default new Vuex.Store({
   state: {
     IsBusy: false as boolean,
     User: DefaultUser as User,
-    Locations: [] as Location[],
+    Locations: [] as LocationInfo[],
+    SelectedZones: [] as ZoneInfo[],
+    SelectedUsers: [] as UserInfo[],
+    SelectedLocation: {} as LocationInfo | undefined,
+    SelectedZone: {} as ZoneInfo | undefined,
+    SelectedSensors: [] as SensorInfo[],
     Users: [] as UserInfo[],
     HasFailed: false,
     ErrorMessage: ''
@@ -48,9 +55,42 @@ export default new Vuex.Store({
       state.IsBusy = isBusy;
     },
 
-    SET_LOCATIONS(state, locations: Location[]) {
+    SET_LOCATIONS(state, locations: LocationInfo[]) {
       state.Locations = locations;
     },
+
+    ADD_LOCATION(state, location: LocationInfo) {
+      state.Locations.push(location);
+    },
+    SET_LOCATION(state, location: LocationInfo) {
+      const userIndex = state.Locations.indexOf(location);
+      state.Locations[userIndex] = location;
+    },
+
+    SET_SELECTED_ZONES(state, zones: ZoneInfo[]) {
+      state.SelectedZones = zones;
+    },
+
+    SET_SELECTED_SENSORS(state, sensors: SensorInfo[]) {
+      state.SelectedSensors = sensors;
+    },
+
+    SET_SELECTED_ZONE(state, zoneId : number) {
+      state.SelectedZone = state.SelectedZones.find(z => z.id === zoneId);
+    },
+
+    ADD_ZONE_TO_SELECTED_ZONE(state, zone: ZoneInfo) {
+      state.SelectedZones.push(zone);
+    },
+
+    SET_SELECTED_USERS(state, users: UserInfo[]) {
+      state.SelectedUsers = users;
+    },
+
+    SET_SELECTED_LOCATION(state, locationId: number) {
+      state.SelectedLocation = state.Locations.find(l => l.id === locationId);
+    },
+
     SET_USERS(state, users: UserInfo[]) {
       state.Users = users;
     },
@@ -80,72 +120,63 @@ export default new Vuex.Store({
   },
   actions: {
     async LOGIN(state, loginRequest: LoginRequest) {
-      state.commit('SET_BUSY_STATUS', true);
       const user = await login(loginRequest);
       state.commit('SET_CURRENT_USER', user);
-      state.commit('SET_BUSY_STATUS', false);
+    },
+
+    async CREATE_LOCATION(state, location: LocationInfo) {
+      const userId = await createLocation(location);
+      location.id = userId;
+      state.commit('ADD_LOCATION', location);
+    },
+
+    async UPDATE_LOCATION(state, location: LocationInfo) {
+      await updateLocation(location);
+      state.commit('SET_LOCATION', location);
     },
     async FETCH_LOCATIONS(state) {
-      state.commit('SET_BUSY_STATUS', true);
       const locations = await getLocations();
       state.commit('SET_LOCATIONS', locations);
-      state.commit('SET_BUSY_STATUS', false);
     },
+
+    async FETCH_SELECTED_LOCATION(state, locationId: number) {
+      state.commit('SET_SELECTED_LOCATION', locationId);
+      const zones = await getZones(locationId);
+      state.commit('SET_SELECTED_ZONES', zones);
+      const users = await getLocationUsers(locationId);
+      state.commit('SET_SELECTED_USERS', users);
+    },
+
+    async FETCH_SELECTED_ZONE(context, zoneId : number){
+      context.commit('SET_SELECTED_ZONE', zoneId);
+      const sensors = await getSensors();
+      context.commit('SET_SELECTED_SENSORS', sensors);
+    },
+
     async FETCH_USERS(state) {
-      state.commit('SET_BUSY_STATUS', true);
       const users = await getUsers();
       state.commit('SET_USERS', users);
-      state.commit('SET_BUSY_STATUS', false);
     },
+
     async CREATE_USER(state, user: NewUser) {
-      state.commit('SET_BUSY_STATUS', true);
-      try {
-        state.commit('CLEAR_ERROR');
-        const userId = await createUser(user);
-        user.id = userId;
-        state.commit('ADD_USER', user);
-      } catch (error) {
-        if (error) {
-          const axiosError = error as AxiosError<ProblemDetails>;
-          if (axiosError && axiosError.response) {
-            state.commit('SET_ERROR', axiosError.response.data.detail);
-          }
-        }
-      } finally {
-        state.commit('SET_BUSY_STATUS', false);
-      }
+      const userId = await createUser(user);
+      user.id = userId;
+      state.commit('ADD_USER', user);
     },
 
     async UPDATE_USER(state, user: User) {
-      state.commit('SET_BUSY_STATUS', true);
-      try {
-        state.commit('CLEAR_ERROR');
-        await updateUser(user);
-        state.commit('SET_USER', user);
-      } catch (error) {
-        const axiosError = error as AxiosError<ProblemDetails>;
-        if (axiosError && axiosError.response) {
-          state.commit('SET_ERROR', axiosError.response.data.detail);
-        }
-      } finally {
-        state.commit('SET_BUSY_STATUS', false);
-      }
+      await updateUser(user);
+      state.commit('SET_USER', user);
     },
 
     async DELETE_USER(state, userId: number) {
-      state.commit('SET_BUSY_STATUS', true);
-      try {
-        state.commit('CLEAR_ERROR');
-        await deleteUser(userId);
-        state.commit('REMOVE_USER', userId);
-      } catch (error) {
-        const axiosError = error as AxiosError<ProblemDetails>;
-        if (axiosError && axiosError.response) {
-          state.commit('SET_ERROR', axiosError.response.data.detail);
-        }
-      } finally {
-        state.commit('SET_BUSY_STATUS', false);
-      }
+      await deleteUser(userId);
+      state.commit('REMOVE_USER', userId);
+    },
+
+    async CREATE_ZONE(state, zone: ZoneInfo) {
+      await createZone(zone);
+      state.commit('ADD_ZONE_TO_SELECTED_ZONE', zone);
     }
   },
   modules: {}

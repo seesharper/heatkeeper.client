@@ -1,41 +1,39 @@
 <template>
-    <div id="app">
-        <div id="nav">
-            <NavigationBar></NavigationBar>
-        </div>
-        <router-view/>
+  <div id="app">
+    <div id="nav">
+      <NavigationBar></NavigationBar>
     </div>
+    <router-view />
+  </div>
 </template>
 <script lang="ts">
-import { Vue } from "vue-property-decorator";
-import NavigationBar from "@/components/NavigationBar.vue";
+import { Vue } from 'vue-property-decorator';
+import NavigationBar from '@/components/NavigationBar.vue';
 
 export default Vue.extend({
-    name: "app",
-    components: {
-        NavigationBar: NavigationBar
-    }
+  name: 'app',
+  components: {
+    NavigationBar: NavigationBar
+  }
 });
 </script>
 
-
-
 <style>
 #app {
-    font-family: "Avenir", Helvetica, Arial, sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    text-align: center;
-    color: #2c3e50;
+  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  color: #2c3e50;
 }
 #nav {
-    padding: 30px;
+  padding: 30px;
 }
 #nav a {
-    font-weight: bold;
-    color: #2c3e50;
+  font-weight: bold;
+  color: #2c3e50;
 }
 #nav a.router-link-exact-active {
-    color: #42b983;
+  color: #42b983;
 }
 </style>

@@ -14,7 +14,8 @@ import {
   faLock,
   faHome,
   faBars,
-  faEdit
+  faEdit,
+  faCog
 } from '@fortawesome/free-solid-svg-icons';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
@@ -29,7 +30,8 @@ library.add(
   faLock,
   faHome,
   faBars,
-  faEdit
+  faEdit,
+  faCog
 );
 Vue.component('font-awesome-icon', FontAwesomeIcon); // registered globally
 Vue.use(BootstrapVue);

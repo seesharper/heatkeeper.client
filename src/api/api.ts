@@ -2,13 +2,54 @@ import { EnvironmentHelper } from './../EnvironmentHelper';
 import {
   LoginRequest,
   User,
-  Location,
+  LocationInfo,
   UserInfo,
-  NewUser
+  NewUser,
+  ZoneInfo,
+  NewZone,
+  ProblemDetails
 } from './../models/models';
 
 import axios, { AxiosRequestConfig, AxiosError } from 'axios';
 import store from '@/store/store';
+import router from '@/router';
+
+axios.interceptors.request.use(
+  config => {
+    store.commit('CLEAR_ERROR');
+    store.commit('SET_BUSY_STATUS', true);
+    return config;
+  }, error => {
+    store.commit('SET_BUSY_STATUS', false);
+    return Promise.reject(error);
+  }
+);
+
+
+axios.interceptors.response.use(
+  response => {
+    store.commit('SET_BUSY_STATUS', false);
+    return response;
+  },
+  error => {
+    store.commit('SET_BUSY_STATUS', false);
+    if (error.response.status === 401) {
+      router.push('login');
+    } else {
+      store.commit('SET_BUSY_STATUS', false);
+      const axiosError = error as AxiosError<ProblemDetails>;
+      if (axiosError && axiosError.response) {
+          store.commit('SET_ERROR', axiosError.response.data.detail);
+        }
+    }
+    return Promise.reject(error);
+  }
+);
+
+
+
+
+
 
 export async function login(loginRequest: LoginRequest): Promise<User> {
   const baseUrl = EnvironmentHelper.baseUrl;
@@ -19,14 +60,90 @@ export async function login(loginRequest: LoginRequest): Promise<User> {
   return result.data as User;
 }
 
-export async function getLocations(): Promise<Location[]> {
+export async function getLocations(): Promise<LocationInfo[]> {
   const config: AxiosRequestConfig = {
     headers: { Authorization: 'bearer ' + store.state.User.token }
   };
 
   const baseUrl = EnvironmentHelper.baseUrl;
-  const result = await axios.get(`${baseUrl}api/locations`, config);
-  return result.data as Location[];
+  const result = await axios.get<LocationInfo[]>(
+    `${baseUrl}api/locations`,
+    config
+  );
+  return result.data as LocationInfo[];
+}
+
+export async function createLocation(location: LocationInfo): Promise<number> {
+  const config: AxiosRequestConfig = {
+    headers: { Authorization: 'bearer ' + store.state.User.token }
+  };
+  const baseUrl = EnvironmentHelper.baseUrl;
+  const result = await axios.post(`${baseUrl}api/locations`, location, config);
+  return result.data.Id;
+}
+
+export async function updateLocation(location: LocationInfo) {
+  const config: AxiosRequestConfig = {
+    headers: { Authorization: 'bearer ' + store.state.User.token }
+  };
+  const baseUrl = EnvironmentHelper.baseUrl;
+  const result = await axios.patch(
+    `${baseUrl}api/locations/${location.id}`,
+    location,
+    config
+  );
+}
+
+export async function getZones(locationId: number): Promise<ZoneInfo[]> {
+  const config: AxiosRequestConfig = {
+    headers: { Authorization: 'bearer ' + store.state.User.token }
+  };
+  const baseUrl = EnvironmentHelper.baseUrl;
+  const result = await axios.get(
+    `${baseUrl}api/locations/${locationId}/zones`,
+    config
+  );
+  return result.data as ZoneInfo[];
+}
+
+export async function getSensors(): Promise<ZoneInfo[]> {
+  const config: AxiosRequestConfig = {
+    headers: { Authorization: 'bearer ' + store.state.User.token }
+  };
+  const baseUrl = EnvironmentHelper.baseUrl;
+  const result = await axios.get(
+    `${baseUrl}api/zones/${store.state.SelectedZone?.id}/sensors`,
+    config
+  );
+  return result.data as ZoneInfo[];
+}
+
+export async function getLocationUsers(
+  locationId: number
+): Promise<UserInfo[]> {
+  const config: AxiosRequestConfig = {
+    headers: { Authorization: 'bearer ' + store.state.User.token }
+  };
+  const baseUrl = EnvironmentHelper.baseUrl;
+  const result = await axios.get(
+    `${baseUrl}api/locations/${locationId}/users`,
+    config
+  );
+  return result.data as UserInfo[];
+}
+
+export async function createZone(zone: ZoneInfo): Promise<number> {
+  const config: AxiosRequestConfig = {
+    headers: { Authorization: 'bearer ' + store.state.User.token }
+  };
+
+  const baseUrl = EnvironmentHelper.baseUrl;
+  const result = await axios.post(
+    `${baseUrl}api/locations/${store.state.SelectedLocation?.id}/zones`,
+    zone,
+    config
+  );
+  return result.data.Id;
 }
 
 export async function getUsers(): Promise<UserInfo[]> {
@@ -56,7 +173,7 @@ export async function updateUser(user: User): Promise<void> {
   await axios.patch(`${baseUrl}api/users/${user.id}`, user, config);
 }
 
-export async function deleteUser(userId: Number): Promise<void> {
+export async function deleteUser(userId: number): Promise<void> {
   const config: AxiosRequestConfig = {
     headers: { Authorization: 'bearer ' + store.state.User.token }
   };
