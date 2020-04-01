@@ -30,8 +30,9 @@
 <script lang="ts">
 import Vue from "vue";
 import store from "@/store/store";
-import { UserInfo } from "@/models/models";
+import { UserInfo, LocationInfo } from "@/models/models";
 import router from "../router";
+import { mapState } from "vuex";
 export default Vue.extend({
     computed: {
         locations() {

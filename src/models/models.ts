@@ -1,25 +1,31 @@
-import { Zone } from './models';
-import { expect } from 'chai';
 export interface LocationInfo {
   id: number;
   name: string;
   description: string;
 }
 
-export interface ZoneInfo {
+export interface ZoneDetail {
   name: string;
   temperature: number;
   humidity: number;
   batteryLevel: number;
 }
 
-export interface Zone {
+export interface ZoneInfo {
   id: number;
   name: string;
   description: string;
 }
 
-export interface NewZone extends Zone {
+export interface SensorInfo{
+  id: number;
+  externalId: string;
+  name: string;
+  description: string;
+  zoneId: number | null;
+}
+
+export interface NewZone extends ZoneInfo {
   locationId: number;
 }
 

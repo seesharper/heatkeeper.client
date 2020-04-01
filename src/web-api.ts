@@ -1,4 +1,4 @@
-import { LocationInfo, ZoneInfo } from './models/models';
+import { LocationInfo, ZoneDetail } from './models/models';
 import { EnvironmentHelper } from './EnvironmentHelper';
 import { HttpClient } from '@/HttpClient';
 
@@ -34,8 +34,8 @@ async function api<T>(url: string): Promise<T> {
 //   return locations;
 //}
 
-export async function getZones(location: string): Promise<ZoneInfo[]> {
-  const zones = new Array<ZoneInfo>();
+export async function getZones(location: string): Promise<ZoneDetail[]> {
+  const zones = new Array<ZoneDetail>();
   zones.push({
     name: 'Living Room',
     temperature: 22.6,

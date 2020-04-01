@@ -24,7 +24,7 @@
                     <b-form-group>
                         <b-list-group>
                             <b-list-group-item
-                                v-for="item in Zones"
+                                v-for="item in zones"
                                 v-bind:key="item.id"
                                 class="d-flex justify-content-between align-items-center"
                             >
@@ -36,7 +36,7 @@
                         </b-list-group>
                     </b-form-group>
                     <b-form-group>
-                        <b-button   
+                        <b-button
                             block
                             v-on:click="()=>$router.push({name:'register-zone', params:{id :locationId}})"
                             variant="primary"
@@ -53,12 +53,14 @@
 
 <script lang="ts">
 import Vue from "vue";
-import { ZoneInfo, Zone } from "../models/models";
+import { ZoneInfo } from "../models/models";
 import { getZones } from "../api/api";
+import store from "@/store/store";
+import { mapState } from "vuex";
 export default Vue.extend({
     data: function() {
         return {
-            Zones: [] as Zone[],
+            Zones: [] as ZoneInfo[],
             name: "",
             description: "",
             isBusy: false,
@@ -68,9 +70,15 @@ export default Vue.extend({
         };
     },
 
+    computed: {
+        ...mapState({
+            zones: "SelectedZones"
+        })
+    },
+
     async mounted() {
         this.locationId = Number.parseInt(this.$route.params["id"]);
-        this.Zones = await getZones(this.locationId);
+        await store.dispatch("FETCH_SELECTED_LOCATION", this.locationId);
     },
 
     methods: {
