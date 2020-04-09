@@ -12,6 +12,7 @@ import ManageZones from './views/ManageZones.vue';
 import RegisterUser from './views/RegisterUser.vue';
 import RegisterZone from './views/RegisterZone.vue';
 import EditLocation from './views/EditLocation.vue';
+import EditZone from './views/EditZone.vue';
 import EditUser from './views/EditUser.vue';
 
 Vue.use(Router);
@@ -25,73 +26,69 @@ export default new Router({
       name: 'home',
       component: Home,
       meta: {
-        requiresAuth: true
-      }
-    },
-    {
-      path: '/about',
-      name: 'about',
-      // route level code-splitting
-      // this generates a separate chunk (about.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () =>
-        import(/* webpackChunkName: "about" */ './views/About.vue')
+        requiresAuth: true,
+      },
     },
     {
       path: '/zones/:location',
       name: 'zones',
       component: Zones,
       meta: {
-        requiresAuth: true
-      }
+        requiresAuth: true,
+      },
     },
     {
       path: '/login',
       name: 'login',
-      component: Login
+      component: Login,
     },
     {
       path: '/users',
       name: 'users',
-      component: Users
+      component: Users,
     },
     {
       path: '/register',
       name: 'register',
-      component: Register
+      component: Register,
     },
     {
       path: '/register-user',
       name: 'register-user',
-      component: RegisterUser
+      component: RegisterUser,
     },
     {
       path: '/edit-user/:id',
       name: 'edit-user',
-      component: EditUser
+      component: EditUser,
     },
     {
       path: '/edit-location/:id',
       name: 'edit-location',
-      component: EditLocation
+      component: EditLocation,
+    },
+    {
+      path: '/edit-zone/:id',
+      name: 'edit-zone',
+      component: EditZone,
     },
     {
       path: '/edit-location/:id/register-zone',
       name: 'register-zone',
-      component: RegisterZone
+      component: RegisterZone,
     },
     {
       path: '/manageLocations',
       name: 'manageLocations',
-      component: ManageLocations
+      component: ManageLocations,
     },
     {
       path: '/register-location',
       name: 'register-location',
       component: RegisterLocation,
       meta: {
-        requiresAuth: true
-      }
-    }
-  ]
+        requiresAuth: true,
+      },
+    },
+  ],
 });

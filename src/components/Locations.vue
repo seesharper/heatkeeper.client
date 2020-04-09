@@ -26,8 +26,6 @@
 <script lang="ts">
 import Vue from "vue";
 import { Component } from "vue-property-decorator";
-import { Location, ZoneInfo } from "../models/models";
-import { getLocations } from "../web-api";
 import { HttpClient } from "@/HttpClient";
 import store from "../store/store";
 
