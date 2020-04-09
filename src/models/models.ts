@@ -5,6 +5,8 @@ export interface LocationInfo {
 }
 
 export interface ZoneDetail {
+  id: number;
+  description: string;
   name: string;
   temperature: number;
   humidity: number;

@@ -1,6 +1,6 @@
-import { LocationInfo, ZoneDetail } from './models/models';
-import { EnvironmentHelper } from './EnvironmentHelper';
-import { HttpClient } from '@/HttpClient';
+import { LocationInfo, ZoneDetail } from "./models/models";
+import { EnvironmentHelper } from "./EnvironmentHelper";
+import { HttpClient } from "@/HttpClient";
 
 async function api<T>(url: string): Promise<T> {
   const baseUrl = EnvironmentHelper.baseUrl;
@@ -13,58 +13,47 @@ async function api<T>(url: string): Promise<T> {
   return data as T;
 }
 
-// export async function getLocations(): Promise<Location[]> {
-//   const test = await HttpClient.get<Location[]>('api/locations');
-//   return test;
-//   const locations = new Array<Location>();
-//   locations.push({
-//     name: 'Homes',
-//     description: 'This is home',
-//     temperature: 2.3,
-//     humidity: 42,
-//     imageUrl: require('@/assets/download.jpeg'),
-//   });
-//   locations.push({
-//     name: 'Cabin',
-//     description: 'This is my cabin',
-//     temperature: -2.4,
-//     humidity: 47,
-//     imageUrl: require('@/assets/snow.jpg'),
-//   });
-//   return locations;
-//}
-
 export async function getZones(location: string): Promise<ZoneDetail[]> {
   const zones = new Array<ZoneDetail>();
   zones.push({
-    name: 'Living Room',
+    id: 1,
+    description: "",
+    name: "Living Room",
     temperature: 22.6,
     humidity: 38,
-    batteryLevel: 68
+    batteryLevel: 68,
   });
   zones.push({
-    name: 'Master Bedroom',
+    id: 2,
+    description: "",
+    name: "Master Bedroom",
     temperature: 10.2,
     humidity: 36,
-    batteryLevel: 72
+    batteryLevel: 72,
   });
   zones.push({
-    name: 'Bathroom 1st floor',
+    id: 3,
+    description: "",
+    name: "Bathroom 1st floor",
     temperature: 10.2,
     humidity: 36,
-    batteryLevel: 72
+    batteryLevel: 72,
   });
   zones.push({
-    name: 'Bathroom 2nd floor',
+    id: 4,
+    description: "",
+    name: "Bathroom 2nd floor",
     temperature: 12.2,
     humidity: 36,
-    batteryLevel: 72
+    batteryLevel: 72,
   });
   zones.push({
-    name: 'Hallway',
+    id: 5,
+    description: "",
+    name: "Hallway",
     temperature: 12.2,
     humidity: 36,
-    batteryLevel: 72
+    batteryLevel: 72,
   });
   return zones;
 }
