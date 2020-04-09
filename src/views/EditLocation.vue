@@ -30,7 +30,7 @@
                             >
                                 <span class="name">{{item.name}}</span>
                                 <router-link
-                                    :to="{name : 'edit-user', params : {id : item.id}}"
+                                    :to="{name : 'edit-zone', params : {id : item.id}}"
                                 >Edit</router-link>
                             </b-list-group-item>
                         </b-list-group>
@@ -53,20 +53,19 @@
 
 <script lang="ts">
 import Vue from "vue";
-import { ZoneInfo } from "../models/models";
+import { ZoneInfo, LocationInfo } from "../models/models";
 import { getZones } from "../api/api";
 import store from "@/store/store";
 import { mapState } from "vuex";
 export default Vue.extend({
     data: function() {
         return {
-            Zones: [] as ZoneInfo[],
-            name: "",
-            description: "",
+            name: "" as string,
+            description: "" as string,
             isBusy: false,
             errorMessage: "",
             hasFailed: false,
-            locationId: 0
+            id: 0
         };
     },
 
@@ -77,12 +76,22 @@ export default Vue.extend({
     },
 
     async mounted() {
-        this.locationId = Number.parseInt(this.$route.params["id"]);
-        await store.dispatch("FETCH_SELECTED_LOCATION", this.locationId);
+        this.id = Number.parseInt(this.$route.params["id"]);
+        await store.dispatch("FETCH_SELECTED_LOCATION", this.id);
+        this.name = store.state.SelectedLocation.name;
+        this.description = store.state.SelectedLocation.description;
     },
 
     methods: {
-        save: async function() {}
+        save: async function() {
+            const updatedLocation = {
+                id: store.state.SelectedLocation.id,
+                name: this.name,
+                description: this.description
+            } as LocationInfo;
+
+            await store.dispatch("UPDATE_LOCATION", updatedLocation);
+        }
     }
 });
 </script>

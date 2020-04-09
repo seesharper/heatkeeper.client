@@ -10,7 +10,7 @@ import {
   getZones,
   getLocationUsers,
   createZone,
-  getSensors
+  getSensors,
 } from '@/api/api';
 import {
   User,
@@ -20,7 +20,9 @@ import {
   UserInfo,
   NewUser,
   ZoneInfo,
-  SensorInfo
+  SensorInfo,
+  DefaultLocation,
+  DefaultZone,
 } from './../models/models';
 import Vue from 'vue';
 import Vuex from 'vuex';
@@ -34,12 +36,12 @@ export default new Vuex.Store({
     Locations: [] as LocationInfo[],
     SelectedZones: [] as ZoneInfo[],
     SelectedUsers: [] as UserInfo[],
-    SelectedLocation: {} as LocationInfo | undefined,
-    SelectedZone: {} as ZoneInfo | undefined,
+    SelectedLocation: {} as LocationInfo,
+    SelectedZone: {} as ZoneInfo,
     SelectedSensors: [] as SensorInfo[],
     Users: [] as UserInfo[],
     HasFailed: false,
-    ErrorMessage: ''
+    ErrorMessage: '',
   },
   mutations: {
     SET_CURRENT_USER(state, user: User) {
@@ -75,8 +77,9 @@ export default new Vuex.Store({
       state.SelectedSensors = sensors;
     },
 
-    SET_SELECTED_ZONE(state, zoneId : number) {
-      state.SelectedZone = state.SelectedZones.find(z => z.id === zoneId);
+    SET_SELECTED_ZONE(state, zoneId: number) {
+      state.SelectedZone =
+        state.SelectedZones.find((z) => z.id === zoneId) ?? DefaultZone;
     },
 
     ADD_ZONE_TO_SELECTED_ZONE(state, zone: ZoneInfo) {
@@ -88,7 +91,8 @@ export default new Vuex.Store({
     },
 
     SET_SELECTED_LOCATION(state, locationId: number) {
-      state.SelectedLocation = state.Locations.find(l => l.id === locationId);
+      state.SelectedLocation =
+        state.Locations.find((l) => l.id === locationId) ?? DefaultLocation;
     },
 
     SET_USERS(state, users: UserInfo[]) {
@@ -99,7 +103,7 @@ export default new Vuex.Store({
       state.Users[userIndex] = user;
     },
     REMOVE_USER(state, userId: number) {
-      state.Users = state.Users.filter(u => u.id !== userId);
+      state.Users = state.Users.filter((u) => u.id !== userId);
     },
 
     INITIALIZE(state) {
@@ -116,7 +120,7 @@ export default new Vuex.Store({
     CLEAR_ERROR(state) {
       state.ErrorMessage = '';
       state.HasFailed = false;
-    }
+    },
   },
   actions: {
     async LOGIN(state, loginRequest: LoginRequest) {
@@ -147,7 +151,7 @@ export default new Vuex.Store({
       state.commit('SET_SELECTED_USERS', users);
     },
 
-    async FETCH_SELECTED_ZONE(context, zoneId : number){
+    async FETCH_SELECTED_ZONE(context, zoneId: number) {
       context.commit('SET_SELECTED_ZONE', zoneId);
       const sensors = await getSensors();
       context.commit('SET_SELECTED_SENSORS', sensors);
@@ -177,7 +181,7 @@ export default new Vuex.Store({
     async CREATE_ZONE(state, zone: ZoneInfo) {
       await createZone(zone);
       state.commit('ADD_ZONE_TO_SELECTED_ZONE', zone);
-    }
+    },
   },
-  modules: {}
+  modules: {},
 });

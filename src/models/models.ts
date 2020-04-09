@@ -17,7 +17,7 @@ export interface ZoneInfo {
   description: string;
 }
 
-export interface SensorInfo{
+export interface SensorInfo {
   id: number;
   externalId: string;
   name: string;
@@ -73,7 +73,7 @@ export interface NewUser extends UserInfo {
 
 export enum EditMode {
   New,
-  Update
+  Update,
 }
 
 export interface ValidationProblemDetails extends ProblemDetails {
@@ -83,3 +83,7 @@ export interface ValidationProblemDetails extends ProblemDetails {
 export const DefaultUser = {} as User;
 
 export const DefaultNewUser = {} as NewUser;
+
+export const DefaultLocation = {} as LocationInfo;
+
+export const DefaultZone = {} as ZoneInfo;

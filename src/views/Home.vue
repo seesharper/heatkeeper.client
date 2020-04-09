@@ -6,14 +6,12 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import HelloWorld from "@/components/HelloWorld.vue"; // @ is an alias to /src
 import Locations from "@/components/Locations.vue";
 import Zones from "@/components/Zones.vue";
 import Battery from "@/components/Battery.vue";
 
 @Component({
     components: {
-        HelloWorld,
         Locations,
         Zones,
         Battery
