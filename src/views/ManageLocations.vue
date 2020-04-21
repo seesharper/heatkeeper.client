@@ -9,23 +9,21 @@
                         v-bind:key="item.id"
                         class="d-flex justify-content-between align-items-center"
                     >
-                        <span class="name">{{item.name}}</span>
-                        <router-link :to="{name : 'edit-location', params : {id : item.id}}">Edit</router-link>
+                        <span class="name">{{ item.name }}</span>
+                        <router-link :to="{ name: 'edit-location', params: { id: item.id } }">Edit</router-link>
                     </b-list-group-item>
                 </b-list-group>
             </b-form-group>
             <b-form-group>
                 <b-button
                     block
-                    v-on:click="()=>$router.push('register-location')"
+                    v-on:click="() => $router.push('register-location')"
                     variant="primary"
                 >New Location</b-button>
             </b-form-group>
         </b-form>
     </div>
 </template>
-
-
 
 <script lang="ts">
 import Vue from "vue";
@@ -46,12 +44,4 @@ export default Vue.extend({
 });
 </script>
 
-<style scoped>
-#parent {
-    text-align: left;
-    padding: 10%;
-}
-#test {
-    text-align: right;
-}
-</style>
+

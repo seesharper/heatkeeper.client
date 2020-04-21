@@ -28,42 +28,29 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
-import { NewZone, ZoneInfo } from '../models/models';
-import { createZone } from '../api/api';
-import router from '../router';
-import store from '@/store/store';
+import Vue from "vue";
+import { NewZone, ZoneInfo } from "../models/models";
+import { createZone } from "../api/api";
+import router from "../router";
+import store from "@/store/store";
 export default Vue.extend({
   data: function() {
     return {
       id: 0,
-      name: '',
-      description: ''
+      name: "",
+      description: "",
     } as ZoneInfo;
   },
 
   methods: {
     save: async function() {
-      await store.dispatch('CREATE_ZONE', {
+      await store.dispatch("CREATE_ZONE", {
         id: this.id,
         name: this.name,
-        description: this.description
+        description: this.description,
       } as ZoneInfo);
       router.back();
-    }
-  }
+    },
+  },
 });
 </script>
-
-<style scoped>
-#parent {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  vertical-align: middle;
-  height: 50vh;
-}
-#registerLocationForm {
-  width: 80%;
-}
-</style>

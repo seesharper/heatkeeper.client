@@ -11,7 +11,10 @@ import {
   getLocationUsers,
   createZone,
   getSensors,
-} from '@/api/api';
+  getZoneDetails,
+  updateZone,
+  deleteZone,
+} from "@/api/api";
 import {
   User,
   LoginRequest,
@@ -23,9 +26,10 @@ import {
   SensorInfo,
   DefaultLocation,
   DefaultZone,
-} from './../models/models';
-import Vue from 'vue';
-import Vuex from 'vuex';
+  ZoneDetails,
+} from "./../models/models";
+import Vue from "vue";
+import Vuex from "vuex";
 
 Vue.use(Vuex);
 
@@ -37,16 +41,16 @@ export default new Vuex.Store({
     SelectedZones: [] as ZoneInfo[],
     SelectedUsers: [] as UserInfo[],
     SelectedLocation: {} as LocationInfo,
-    SelectedZone: {} as ZoneInfo,
+    SelectedZone: {} as ZoneDetails,
     SelectedSensors: [] as SensorInfo[],
     Users: [] as UserInfo[],
     HasFailed: false,
-    ErrorMessage: '',
+    ErrorMessage: "",
   },
   mutations: {
     SET_CURRENT_USER(state, user: User) {
       state.User = user;
-      localStorage.setItem('user', JSON.stringify(user));
+      localStorage.setItem("user", JSON.stringify(user));
     },
 
     ADD_USER(state, user: UserInfo) {
@@ -77,9 +81,8 @@ export default new Vuex.Store({
       state.SelectedSensors = sensors;
     },
 
-    SET_SELECTED_ZONE(state, zoneId: number) {
-      state.SelectedZone =
-        state.SelectedZones.find((z) => z.id === zoneId) ?? DefaultZone;
+    SET_SELECTED_ZONE(state, selectedZone: ZoneDetails) {
+      state.SelectedZone = selectedZone;
     },
 
     ADD_ZONE_TO_SELECTED_ZONE(state, zone: ZoneInfo) {
@@ -107,7 +110,7 @@ export default new Vuex.Store({
     },
 
     INITIALIZE(state) {
-      const json = localStorage.getItem('user');
+      const json = localStorage.getItem("user");
       if (json != null) {
         state.User = JSON.parse(json) as User;
       }
@@ -118,69 +121,79 @@ export default new Vuex.Store({
     },
 
     CLEAR_ERROR(state) {
-      state.ErrorMessage = '';
+      state.ErrorMessage = "";
       state.HasFailed = false;
     },
   },
   actions: {
     async LOGIN(state, loginRequest: LoginRequest) {
       const user = await login(loginRequest);
-      state.commit('SET_CURRENT_USER', user);
+      state.commit("SET_CURRENT_USER", user);
     },
 
     async CREATE_LOCATION(state, location: LocationInfo) {
       const userId = await createLocation(location);
       location.id = userId;
-      state.commit('ADD_LOCATION', location);
+      state.commit("ADD_LOCATION", location);
     },
 
     async UPDATE_LOCATION(state, location: LocationInfo) {
       await updateLocation(location);
-      state.commit('SET_LOCATION', location);
+      state.commit("SET_LOCATION", location);
     },
     async FETCH_LOCATIONS(state) {
       const locations = await getLocations();
-      state.commit('SET_LOCATIONS', locations);
+      state.commit("SET_LOCATIONS", locations);
     },
 
     async FETCH_SELECTED_LOCATION(state, locationId: number) {
-      state.commit('SET_SELECTED_LOCATION', locationId);
+      state.commit("SET_SELECTED_LOCATION", locationId);
       const zones = await getZones(locationId);
-      state.commit('SET_SELECTED_ZONES', zones);
+      state.commit("SET_SELECTED_ZONES", zones);
       const users = await getLocationUsers(locationId);
-      state.commit('SET_SELECTED_USERS', users);
+      state.commit("SET_SELECTED_USERS", users);
     },
 
     async FETCH_SELECTED_ZONE(context, zoneId: number) {
-      context.commit('SET_SELECTED_ZONE', zoneId);
+      const zoneDetails = await getZoneDetails(zoneId);
+      context.commit("SET_SELECTED_ZONE", zoneDetails);
       const sensors = await getSensors();
-      context.commit('SET_SELECTED_SENSORS', sensors);
+      context.commit("SET_SELECTED_SENSORS", sensors);
     },
 
     async FETCH_USERS(state) {
       const users = await getUsers();
-      state.commit('SET_USERS', users);
+      state.commit("SET_USERS", users);
     },
 
     async CREATE_USER(state, user: NewUser) {
       const userId = await createUser(user);
       user.id = userId;
-      state.commit('ADD_USER', user);
+      state.commit("ADD_USER", user);
     },
 
     async UPDATE_USER(state, user: User) {
       await updateUser(user);
-      state.commit('SET_USER', user);
+      state.commit("SET_USER", user);
     },
 
     async DELETE_USER(state, userId: number) {
       await deleteUser(userId);
-      state.commit('REMOVE_USER', userId);
+      state.commit("REMOVE_USER", userId);
     },
 
     async CREATE_ZONE(state, zone: ZoneInfo) {
       await createZone(zone);
-      state.commit('ADD_ZONE_TO_SELECTED_ZONE', zone);
+      state.commit("ADD_ZONE_TO_SELECTED_ZONE", zone);
+    },
+
+    async UPDATE_ZONE(context, zoneDetails: ZoneDetails) {
+      await updateZone(zoneDetails);
+      context.commit("SET_SELECTED_ZONE", zoneDetails);
+    },
+
+    async DELETE_ZONE(context, zoneID: number) {
+      await deleteZone(zoneID);
     },
   },
   modules: {},
