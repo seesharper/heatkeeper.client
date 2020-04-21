@@ -8,6 +8,7 @@ import {
   ZoneInfo,
   NewZone,
   ProblemDetails,
+  ZoneDetails,
 } from "./../models/models";
 
 import axios, { AxiosRequestConfig, AxiosError } from "axios";
@@ -65,7 +66,48 @@ export async function getLocations(): Promise<LocationInfo[]> {
     `${baseUrl}api/locations`,
     config
   );
+
+  //await sleep(2000);
+
   return result.data as LocationInfo[];
+}
+
+export async function getZoneDetails(zoneId: number): Promise<ZoneDetails> {
+  const config: AxiosRequestConfig = {
+    headers: { Authorization: "bearer " + store.state.User.token },
+  };
+
+  const baseUrl = EnvironmentHelper.baseUrl;
+  const result = await axios.get<ZoneDetails>(
+    `${baseUrl}api/zones/${zoneId}`,
+    config
+  );
+
+  return result.data as ZoneDetails;
+}
+
+export async function updateZone(zoneDetails: ZoneDetails): Promise<void> {
+  const config: AxiosRequestConfig = {
+    headers: { Authorization: "bearer " + store.state.User.token },
+  };
+
+  const baseUrl = EnvironmentHelper.baseUrl;
+
+  await axios.patch(
+    `${baseUrl}api/zones/${zoneDetails.id}`,
+    zoneDetails,
+    config
+  );
+}
+
+export async function deleteZone(zoneId: number): Promise<void> {
+  const config: AxiosRequestConfig = {
+    headers: { Authorization: "bearer " + store.state.User.token },
+  };
+
+  const baseUrl = EnvironmentHelper.baseUrl;
+
+  await axios.delete(`${baseUrl}api/zones/${zoneId}`, config);
 }
 
 export async function createLocation(location: LocationInfo): Promise<number> {
@@ -174,4 +216,8 @@ export async function deleteUser(userId: number): Promise<void> {
   };
   const baseUrl = EnvironmentHelper.baseUrl;
   await axios.delete(`${baseUrl}api/users/${userId}`, config);
+}
+
+function sleep(ms: number) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
 }

@@ -4,13 +4,12 @@ export interface LocationInfo {
   description: string;
 }
 
-export interface ZoneDetail {
+export interface ZoneDetails {
   id: number;
   description: string;
   name: string;
-  temperature: number;
-  humidity: number;
-  batteryLevel: number;
+  isDefaultOutsideZone: boolean;
+  isDefaultInsideZone: boolean;
 }
 
 export interface ZoneInfo {
