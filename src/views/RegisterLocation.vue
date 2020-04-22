@@ -16,10 +16,7 @@
           placeholder="Description"
         />
       </b-form-group>
-      <b-alert variant="danger" :show="hasFailed">{{ errorMessage }}</b-alert>
-      <b-form-group>
-        <b-spinner v-if="isBusy" label="Loading..."></b-spinner>
-      </b-form-group>
+
       <b-form-group>
         <b-button block v-on:click="save" variant="primary"
           >Create location</b-button
@@ -42,18 +39,6 @@ export default Vue.extend({
       name: "",
       description: "",
     };
-  },
-
-  computed: {
-    hasFailed() {
-      return store.state.HasFailed;
-    },
-    errorMessage() {
-      return store.state.ErrorMessage;
-    },
-    isBusy() {
-      return store.state.IsBusy;
-    },
   },
   methods: {
     save: async function() {
