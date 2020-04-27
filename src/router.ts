@@ -13,6 +13,7 @@ import RegisterZone from "./views/RegisterZone.vue";
 import EditLocation from "./views/EditLocation.vue";
 import EditZone from "./views/EditZone.vue";
 import EditUser from "./views/EditUser.vue";
+import ApiKey from "./views/ApiKey.vue";
 
 Vue.use(Router);
 
@@ -80,6 +81,11 @@ export default new Router({
       path: "/manageLocations",
       name: "manageLocations",
       component: ManageLocations,
+    },
+    {
+      path: "/apikey",
+      name: "apikey",
+      component: ApiKey,
     },
     {
       path: "/register-location",
