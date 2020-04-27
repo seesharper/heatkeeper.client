@@ -9,6 +9,7 @@ import {
   NewZone,
   ProblemDetails,
   ZoneDetails,
+  ApiKey,
 } from "./../models/models";
 
 import axios, { AxiosRequestConfig, AxiosError } from "axios";
@@ -218,6 +219,11 @@ export async function deleteUser(userId: number): Promise<void> {
   await axios.delete(`${baseUrl}api/users/${userId}`, config);
 }
 
-function sleep(ms: number) {
-  return new Promise((resolve) => setTimeout(resolve, ms));
+export async function getApiKey(): Promise<ApiKey> {
+  const config: AxiosRequestConfig = {
+    headers: { Authorization: "bearer " + store.state.User.token },
+  };
+  const baseUrl = EnvironmentHelper.baseUrl;
+  const result = await axios.get<ApiKey>(`${baseUrl}api/users/apikey`, config);
+  return result.data;
 }

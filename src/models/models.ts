@@ -72,6 +72,10 @@ export interface NewUser extends UserInfo {
   confirmedPassword: string;
 }
 
+export interface ApiKey {
+  token: string;
+}
+
 export enum EditMode {
   New,
   Update,
