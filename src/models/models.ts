@@ -92,3 +92,5 @@ export const DefaultNewUser = {} as NewUser;
 export const DefaultLocation = {} as LocationInfo;
 
 export const DefaultZone = {} as ZoneInfo;
+
+export const DefaultSensor = {} as SensorInfo;

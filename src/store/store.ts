@@ -14,6 +14,8 @@ import {
   getZoneDetails,
   updateZone,
   deleteZone,
+  updateSensor,
+  deleteSensor,
 } from "@/api/api";
 import {
   User,
@@ -27,6 +29,7 @@ import {
   DefaultLocation,
   DefaultZone,
   ZoneDetails,
+  DefaultSensor,
 } from "./../models/models";
 import Vue from "vue";
 import Vuex from "vuex";
@@ -43,6 +46,7 @@ export default new Vuex.Store({
     SelectedLocation: {} as LocationInfo,
     SelectedZone: {} as ZoneDetails,
     SelectedSensors: [] as SensorInfo[],
+    SelectedSensor: {} as SensorInfo,
     Users: [] as UserInfo[],
     HasFailed: false,
     ErrorMessage: "",
@@ -83,6 +87,15 @@ export default new Vuex.Store({
 
     SET_SELECTED_ZONE(state, selectedZone: ZoneDetails) {
       state.SelectedZone = selectedZone;
+    },
+
+    SET_SELECTED_SENSOR(state, selectedSensor: SensorInfo) {
+      state.SelectedSensor = selectedSensor;
+    },
+
+    SET_SELECTED_SENSOR_BY_ID(state, sensorID: number) {
+      state.SelectedSensor =
+        state.SelectedSensors.find((l) => l.id === sensorID) ?? DefaultSensor;
     },
 
     ADD_ZONE_TO_SELECTED_ZONE(state, zone: ZoneInfo) {
@@ -194,6 +207,15 @@ export default new Vuex.Store({
 
     async DELETE_ZONE(context, zoneID: number) {
       await deleteZone(zoneID);
+    },
+
+    async UPDATE_SENSOR(context, sensor: SensorInfo) {
+      await updateSensor(sensor);
+      context.commit("SET_SELECTED_SENSOR", sensor);
+    },
+
+    async DELETE_SENSOR(context, sensorId: number) {
+      await deleteSensor(sensorId);
     },
   },
   modules: {},

@@ -3,17 +3,17 @@ import Router from "vue-router";
 import Home from "./views/Home.vue";
 import Zones from "./components/Zones.vue";
 import Login from "./views/Login.vue";
-import Users from "./views/Users.vue";
+import ManageUsers from "./views/ManageUsers.vue";
 import Register from "./views/Register.vue";
 import RegisterLocation from "./views/RegisterLocation.vue";
 import ManageLocations from "./views/ManageLocations.vue";
-import ManageZones from "./views/ManageZones.vue";
 import RegisterUser from "./views/RegisterUser.vue";
 import RegisterZone from "./views/RegisterZone.vue";
 import EditLocation from "./views/EditLocation.vue";
 import EditZone from "./views/EditZone.vue";
 import EditUser from "./views/EditUser.vue";
 import ApiKey from "./views/ApiKey.vue";
+import EditSensor from "./views/EditSensor.vue";
 
 Vue.use(Router);
 
@@ -43,9 +43,9 @@ export default new Router({
       component: Login,
     },
     {
-      path: "/users",
-      name: "users",
-      component: Users,
+      path: "/manageUsers",
+      name: "manageUsers",
+      component: ManageUsers,
     },
     {
       path: "/register",
@@ -63,9 +63,14 @@ export default new Router({
       component: EditUser,
     },
     {
-      path: "/edit-location/:id",
+      path: "/edit-location/:locationId",
       name: "edit-location",
       component: EditLocation,
+    },
+    {
+      path: "/edit-sensor/:sensorId",
+      name: "edit-sensor",
+      component: EditSensor,
     },
     {
       path: "/edit-zone/:id",

@@ -1,6 +1,5 @@
 <template>
     <div id="parent">
-        <h2>Zone</h2>
         <b-tabs content-class="mt-3">
             <b-tab title="Zone" active>
                 <b-form id="editZoneForm" @submit.prevent="onSubmit" autocomplete="off">
@@ -42,10 +41,11 @@
                                 v-for="item in sensors"
                                 v-bind:key="item.id"
                                 class="d-flex justify-content-between align-items-center"
+                                :variant="item.zoneId != null ? 'success' : ''"
                             >
                                 <span class="name">{{ item.name }}</span>
                                 <router-link
-                                    :to="{ name: 'edit-user', params: { id: item.id } }"
+                                    :to="{ name: 'edit-sensor', params: { sensorId: item.id } }"
                                 >Edit</router-link>
                             </b-list-group-item>
                         </b-list-group>
@@ -127,12 +127,4 @@ export default Vue.extend({
 });
 </script>
 
-<style scoped>
-#parent {
-    text-align: center;
-    padding: 10%;
-}
-#test {
-    text-align: right;
-}
-</style>
+

@@ -10,6 +10,7 @@ import {
   ProblemDetails,
   ZoneDetails,
   ApiKey,
+  SensorInfo,
 } from "./../models/models";
 
 import axios, { AxiosRequestConfig, AxiosError } from "axios";
@@ -67,9 +68,6 @@ export async function getLocations(): Promise<LocationInfo[]> {
     `${baseUrl}api/locations`,
     config
   );
-
-  //await sleep(2000);
-
   return result.data as LocationInfo[];
 }
 
@@ -217,6 +215,22 @@ export async function deleteUser(userId: number): Promise<void> {
   };
   const baseUrl = EnvironmentHelper.baseUrl;
   await axios.delete(`${baseUrl}api/users/${userId}`, config);
+}
+
+export async function updateSensor(sensor: SensorInfo): Promise<void> {
+  const config: AxiosRequestConfig = {
+    headers: { Authorization: "bearer " + store.state.User.token },
+  };
+  const baseUrl = EnvironmentHelper.baseUrl;
+  await axios.patch(`${baseUrl}api/sensors/${sensor.id}`, sensor, config);
+}
+
+export async function deleteSensor(sensorId: number): Promise<void> {
+  const config: AxiosRequestConfig = {
+    headers: { Authorization: "bearer " + store.state.User.token },
+  };
+  const baseUrl = EnvironmentHelper.baseUrl;
+  await axios.delete(`${baseUrl}api/sensor/${sensorId}`, config);
 }
 
 export async function getApiKey(): Promise<ApiKey> {

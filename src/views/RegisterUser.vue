@@ -121,7 +121,7 @@ export default Vue.extend({
             } as NewUser;
             await store.dispatch("CREATE_USER", user);
             if (!store.state.HasFailed) {
-                await router.push("users");
+                await router.push("manageUsers");
             }
         }
     },
