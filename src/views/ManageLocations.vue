@@ -10,7 +10,9 @@
                         class="d-flex justify-content-between align-items-center"
                     >
                         <span class="name">{{ item.name }}</span>
-                        <router-link :to="{ name: 'edit-location', params: { id: item.id } }">Edit</router-link>
+                        <router-link
+                            :to="{ name: 'edit-location', params: { locationId: item.id } }"
+                        >Edit</router-link>
                     </b-list-group-item>
                 </b-list-group>
             </b-form-group>

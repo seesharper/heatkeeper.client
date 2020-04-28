@@ -102,7 +102,7 @@ export default Vue.extend({
             } as UserInfo;
             await store.dispatch("UPDATE_USER", user);
             if (!store.state.HasFailed) {
-                await router.push("/users");
+                await router.push("manageUsers");
             }
         },
         confirmDeletion: async function() {
