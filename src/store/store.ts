@@ -16,6 +16,7 @@ import {
   deleteZone,
   updateSensor,
   deleteSensor,
+  getDashboardLocations,
 } from "@/api/api";
 import {
   User,
@@ -30,6 +31,7 @@ import {
   DefaultZone,
   ZoneDetails,
   DefaultSensor,
+  DashboardLocation,
 } from "./../models/models";
 import Vue from "vue";
 import Vuex from "vuex";
@@ -40,6 +42,7 @@ export default new Vuex.Store({
   state: {
     IsBusy: false as boolean,
     User: DefaultUser as User,
+    DashboardLocations: [] as DashboardLocation[],
     Locations: [] as LocationInfo[],
     SelectedZones: [] as ZoneInfo[],
     SelectedUsers: [] as UserInfo[],
@@ -67,6 +70,10 @@ export default new Vuex.Store({
 
     SET_LOCATIONS(state, locations: LocationInfo[]) {
       state.Locations = locations;
+    },
+
+    SET_DASHBOARD_LOCATIONS(state, dashboardLocations: DashboardLocation[]) {
+      state.DashboardLocations = dashboardLocations;
     },
 
     ADD_LOCATION(state, location: LocationInfo) {
@@ -216,6 +223,11 @@ export default new Vuex.Store({
 
     async DELETE_SENSOR(context, sensorId: number) {
       await deleteSensor(sensorId);
+    },
+
+    async FETCH_DASHBOARD_LOCATIONS(context) {
+      const dashboardLocations = await getDashboardLocations();
+      context.commit("SET_DASHBOARD_LOCATIONS", dashboardLocations);
     },
   },
   modules: {},
