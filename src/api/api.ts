@@ -11,6 +11,7 @@ import {
   ZoneDetails,
   ApiKey,
   SensorInfo,
+  DashboardLocation,
 } from "./../models/models";
 
 import axios, { AxiosRequestConfig, AxiosError } from "axios";
@@ -56,6 +57,20 @@ export async function login(loginRequest: LoginRequest): Promise<User> {
     loginRequest
   );
   return result.data as User;
+}
+
+export async function getDashboardLocations(): Promise<DashboardLocation[]> {
+  const config: AxiosRequestConfig = {
+    headers: { Authorization: "bearer " + store.state.User.token },
+  };
+
+  const baseUrl = EnvironmentHelper.baseUrl;
+
+  const result = await axios.get<DashboardLocation[]>(
+    `${baseUrl}api/dashboard/locations`,
+    config
+  );
+  return result.data as DashboardLocation[];
 }
 
 export async function getLocations(): Promise<LocationInfo[]> {
